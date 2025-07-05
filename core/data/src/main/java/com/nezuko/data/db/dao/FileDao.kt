@@ -32,5 +32,6 @@ interface FileDao {
     @Query("SELECT * FROM files WHERE id = :id")
     suspend fun getFileById(id: Int): FileEntity
 
-
+    @Query("SELECT * FROM files")
+    fun getAll(): List<FileEntity>
 }

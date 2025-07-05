@@ -27,7 +27,7 @@ class ReaderFragment : Fragment() {
     }
 
     private val fileId: Int by lazy {
-        arguments?.getInt("id")!!
+        arguments?.getInt("fileId")!!
     }
 
     @Inject
@@ -71,6 +71,7 @@ class ReaderFragment : Fragment() {
                             Log.i(TAG, "onViewCreated: state flow - none")
                         }
                         is Result.Success<View> -> {
+                            Log.i(TAG, "onViewCreated: success")
                             binding.mdContainer.removeAllViews()
                             binding.mdContainer.addView(res.data)
                         }

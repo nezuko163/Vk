@@ -18,7 +18,7 @@ import javax.inject.Inject
 class FilesMetadataRepositoryImpl @Inject constructor(
     private val dao: FileDao
 ) : FilesMetadataRepository {
-    private val TAG = "FilesRepositoryImpl"
+    private val TAG = "FilesMetadataRepositoryImpl"
     override fun getFiles(): Flow<PagingData<FileDto>> {
         Log.i(TAG, "getFiles: start")
         return Pager(
@@ -26,7 +26,7 @@ class FilesMetadataRepositoryImpl @Inject constructor(
             pagingSourceFactory = { dao.getFilesPagingSource().also { Log.i(TAG, "getFiles: ") } },
             initialKey = null
         ).flow.map {
-            it.map { it.toDto().also { Log.i(TAG, "getFiles: $it") } }
+            it.map { entity -> entity.toDto() }
         }
     }
 
@@ -47,7 +47,6 @@ class FilesMetadataRepositoryImpl @Inject constructor(
     }
 
     override suspend fun getFileById(id: Int): FileDto {
-        Log.i(TAG, "getFileById: ${dao.get}")
         return dao.getFileById(id).toDto()
     }
 }

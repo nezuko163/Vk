@@ -14,7 +14,7 @@ import javax.inject.Inject
 class WriterFragment : Fragment() {
     private lateinit var binding: MdWriterLayoutBinding
     private val fileId: Int by lazy {
-        arguments?.getInt("id")!!
+        arguments?.getInt("fileId")!!
     }
 
 

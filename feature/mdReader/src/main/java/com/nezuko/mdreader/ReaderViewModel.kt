@@ -49,6 +49,7 @@ class ReaderViewModel @Inject constructor(
             Log.i(TAG, "load: id - $id")
             getTextFromFileId(id)
                 .asd { res ->
+
                     mdRenderer.render(res)
                 }
                 .collect {

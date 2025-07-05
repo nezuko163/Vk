@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/topBar"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/topBarIconSize"
+        android:background="@color/light_blue"
+        android:orientation="horizontal"
+        android:paddingHorizontal="10dp">
+
+        <ImageButton
+            android:id="@+id/back"
+            android:layout_width="@dimen/topBarIconSize"
+            android:layout_height="@dimen/topBarIconSize"
+            android:background="@android:color/transparent"
+            android:padding="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/arrow_back"
+            android:tint="@color/white" />
+
+        <Space
+            android:layout_width="10dp"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="asd"
+            android:textColor="@color/white"
+            android:textSize="10pt" />
+
+        <ImageButton
+            android:id="@+id/edit"
+            android:layout_width="@dimen/topBarIconSize"
+            android:layout_height="@dimen/topBarIconSize"
+            android:background="@android:color/transparent"
+            android:padding="10dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/edit"
+            android:tint="@color/white" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/mdContainer"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
+
+
+</LinearLayout>

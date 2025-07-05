@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/graph"
+    app:startDestination="@id/mainFragment">
+
+    <fragment
+        android:id="@+id/mainFragment"
+        android:name="com.nezuko.main.MainFragment"
+        android:label="Main">
+        <action android:id="@+id/from_main_to_reader"
+            app:destination="@id/reader"
+            app:popUpToInclusive="false" />
+    </fragment>
+
+    <fragment android:id="@+id/reader"
+        android:name="com.nezuko.mdreader.ReaderFragment"
+        android:label="reader">
+
+        <argument
+            android:name="fileId"
+            android:defaultValue="-1"
+            app:argType="integer" />
+
+    </fragment>
+
+</navigation>

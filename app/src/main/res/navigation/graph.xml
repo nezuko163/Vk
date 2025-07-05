@@ -9,26 +9,37 @@
         android:name="com.nezuko.main.MainFragment"
         android:label="Main">
 
-        <action android:id="@+id/from_main_to_reader"
+        <action
+            android:id="@+id/from_main_to_reader"
             app:destination="@id/reader"
-            app:popUpToInclusive="false" />
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
 
-        <action android:id="@+id/from_main_to_writer"
+        <action
+            android:id="@+id/from_main_to_writer"
             app:destination="@id/writer"
-            app:popUpToInclusive="false" />
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
 
     </fragment>
 
-    <fragment android:id="@+id/reader"
+    <fragment
+        android:id="@+id/reader"
         android:name="com.nezuko.mdreader.ReaderFragment"
         android:label="reader">
 
 
-        <action android:id="@+id/from_reader_to_writer"
+        <action
+            android:id="@+id/from_reader_to_writer"
             app:destination="@id/writer"
-            app:popUpTo="@id/mainFragment"
-            app:popUpToInclusive="true"/>
-
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
+            app:popUpTo="@id/reader"
+            app:popUpToInclusive="true" />
         <argument
             android:name="fileId"
             android:defaultValue="-1"
@@ -36,14 +47,18 @@
 
     </fragment>
 
-    <fragment android:id="@+id/writer"
+    <fragment
+        android:id="@+id/writer"
         android:name="com.nezuko.mdwriter.WriterFragment"
         android:label="writer">
 
-        <action android:id="@+id/from_writer_to_reader"
+        <action
+            android:id="@+id/from_writer_to_reader"
             app:destination="@id/reader"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"
             app:popUpTo="@id/mainFragment"
-            app:popUpToInclusive="true"/>
+            app:popUpToInclusive="true" />
 
         <argument
             android:name="fileId"

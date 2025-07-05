@@ -1,12 +1,7 @@
 package com.nezuko.data.di
 
-import com.nezuko.data.impl.MdParserRepositoryImpl
 import com.nezuko.data.md.MdRendererImpl
-import com.nezuko.data.md.render.ImageViewRender
-import com.nezuko.data.md.render.Render
-import com.nezuko.data.md.render.SpacerViewRender
-import com.nezuko.data.md.render.TableViewRender
-import com.nezuko.data.md.render.TextViewRender
+import com.nezuko.data.md.MdParserImpl
 import com.nezuko.data.md.utils.ImageLoader
 import com.nezuko.data.md.utils.ImageLoaderImpl
 import com.nezuko.data.md.utils.TextStyler
@@ -44,6 +39,6 @@ abstract class MdModule {
     @Binds
     @Singleton
     abstract fun bindMdParser(
-        impl: MdParserRepositoryImpl
+        impl: MdParserImpl
     ): MdParserRepository
 }

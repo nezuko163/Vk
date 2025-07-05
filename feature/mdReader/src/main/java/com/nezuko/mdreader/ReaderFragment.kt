@@ -79,6 +79,10 @@ class ReaderFragment : Fragment() {
                 }
             })
         }
+    }
 
+    override fun onDestroyView() {
+        super.onDestroyView()
+        vm.setNone()
     }
 }

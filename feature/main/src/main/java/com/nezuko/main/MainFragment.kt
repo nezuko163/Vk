@@ -15,6 +15,7 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nezuko.domain.repository.Navigation
+import com.nezuko.main.databinding.BottomSheetWithTextFieldBinding
 import com.nezuko.main.databinding.FragmentMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -37,6 +38,20 @@ class MainFragment : Fragment() {
 
     private lateinit var openFileLauncher: ActivityResultLauncher<Array<String>>
     private lateinit var createFileLauncher: ActivityResultLauncher<String>
+
+    private val bottomSheetWithText = BottomSheetWithTextField({})
+
+    private val bottomSheet = MyBottomSheetFragment(
+        onOpenExitedFile = {
+            openFileLauncher.launch(arrayOf("text/*"))
+        },
+        onSearchFileOnInternet = {
+            bottomSheetWithText.show(parentFragmentManager, bottomSheetWithText.tag)
+        },
+        onCreateNewFile = {
+            createFileLauncher.launch("file.md")
+        }
+    )
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -69,21 +84,13 @@ class MainFragment : Fragment() {
             }
 
         binding.open.setOnClickListener {
-            val bottomSheet = MyBottomSheetFragment(
-                onOpenExitedFile = {
-                    openFileLauncher.launch(arrayOf("text/*"))
-                },
-                onSearchFileOnInternet = {},
-                onCreateNewFile = {
-                    createFileLauncher.launch("file.md")
-                }
-            )
             bottomSheet.show(parentFragmentManager, bottomSheet.tag)
         }
 
         binding.rcView.layoutManager = LinearLayoutManager(context)
         adapter = FilesAdapter(onItemClick = { file ->
             vm.updateLastOpen(file.fileId)
+            navigation.navigateFromMainToMdReader(file.fileId)
         })
         binding.rcView.adapter = adapter
 

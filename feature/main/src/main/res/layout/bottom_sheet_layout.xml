@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bottomSheetLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <TextView
+        android:id="@+id/openFileTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Файл с устройства"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/openInternetFileTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Файл с интернета"
+        android:textSize="18sp" />
+
+    <TextView
+        android:id="@+id/createNewFileTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Создать новый файл"
+        android:textSize="18sp" />
+
+    <!-- Добавь сюда любые кнопки, списки и т.д. -->
+
+</LinearLayout>

@@ -1,7 +1,9 @@
 package com.nezuko.data.di
 
-import com.nezuko.data.impl.FilesRepositoryImpl
-import com.nezuko.domain.repository.FilesRepository
+import com.nezuko.data.impl.FilesContentRepositoryImpl
+import com.nezuko.data.impl.FilesMetadataRepositoryImpl
+import com.nezuko.domain.repository.FilesContentRepository
+import com.nezuko.domain.repository.FilesMetadataRepository
 import dagger.Binds
 import dagger.Module
 import dagger.hilt.InstallIn
@@ -14,5 +16,9 @@ abstract class DataModule {
 
     @Binds
     @Singleton
-    abstract fun fileRepo(impl: FilesRepositoryImpl): FilesRepository
+    abstract fun fileMetadataRepo(impl: FilesMetadataRepositoryImpl): FilesMetadataRepository
+
+    @Binds
+    @Singleton
+    abstract fun fileReadWriteRepo(impl: FilesContentRepositoryImpl): FilesContentRepository
 }

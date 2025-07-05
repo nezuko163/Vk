@@ -8,17 +8,16 @@ import androidx.paging.map
 import com.nezuko.data.db.dao.FileDao
 import com.nezuko.data.db.entity.FileEntity
 import com.nezuko.data.toDto
-import com.nezuko.data.toEntity
 import com.nezuko.domain.dto.FileDto
-import com.nezuko.domain.repository.FilesRepository
+import com.nezuko.domain.repository.FilesMetadataRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import java.time.Instant
 import javax.inject.Inject
 
-class FilesRepositoryImpl @Inject constructor(
+class FilesMetadataRepositoryImpl @Inject constructor(
     private val dao: FileDao
-) : FilesRepository {
+) : FilesMetadataRepository {
     private val TAG = "FilesRepositoryImpl"
     override fun getFiles(): Flow<PagingData<FileDto>> {
         Log.i(TAG, "getFiles: start")
@@ -27,25 +26,28 @@ class FilesRepositoryImpl @Inject constructor(
             pagingSourceFactory = { dao.getFilesPagingSource().also { Log.i(TAG, "getFiles: ") } },
             initialKey = null
         ).flow.map {
-            it.map { it.toDto().also { Log.i(TAG, "getFiles: $it") } } }
+            it.map { it.toDto().also { Log.i(TAG, "getFiles: $it") } }
+        }
     }
 
     override suspend fun updateLastOpen(fileId: Int) {
         dao.updateLastOpen(fileId, Instant.now())
     }
 
-    override suspend fun addFile(fileDto: FileDto) {
-        dao.insert(fileDto.toEntity())
+    override suspend fun addFile(name: String): Int {
+        return dao.insert(FileEntity(0, name, Instant.now())).toInt()
     }
 
-    override suspend fun __setRandomFiles() {
-        Log.i(TAG, "__setRandomFiles: setting random files")
-        dao.insertAll(List(20) { id -> FileEntity(0, "", Instant.now())})
-        Thread.sleep(1000)
-        getCount()
+    override fun getCount(): Flow<Long> {
+        return dao.getCount()
     }
 
-    override suspend fun getCount(): Long {
-        return dao.getCount().also { Log.i(TAG, "getCount: $it") }
+    override suspend fun getFileByName(name: String): FileDto {
+        return dao.getFileByName(name).first().toDto()
+    }
+
+    override suspend fun getFileById(id: Int): FileDto {
+        Log.i(TAG, "getFileById: ${dao.get}")
+        return dao.getFileById(id).toDto()
     }
 }

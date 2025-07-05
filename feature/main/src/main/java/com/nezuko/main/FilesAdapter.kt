@@ -28,10 +28,6 @@ class FilesAdapter(
         return FilesViewHolder(binding)
     }
 
-    override fun getItemCount(): Int {
-        return super.getItemCount().also { Log.i(TAG, "getItemCount: $it") }
-    }
-
 
     override fun onBindViewHolder(
         holder: FilesViewHolder,

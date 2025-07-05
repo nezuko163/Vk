@@ -11,6 +11,8 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.nezuko.domain.repository.Navigation
 import com.nezuko.main.MainFragmentDirections
+import com.nezuko.mdreader.ReaderFragmentDirections
+import com.nezuko.mdwriter.WriterFragmentDirections
 import com.nezuko.vk.databinding.MainLayoutBinding
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
@@ -44,8 +46,20 @@ class MainActivity : AppCompatActivity() {
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
         navController = navHostFragment!!.findNavController()
 
-        navigation.navigateBack = navController::popBackStack
-        navigation.navigateToMdReader = { navController.navigate(MainFragmentDirections.fromMainToReader(it)) }
-
+        navigation.apply {
+            navigateBack = navController::popBackStack
+            navigateFromMainToMdReader = {
+                navController.navigate(MainFragmentDirections.fromMainToReader(it))
+            }
+            navigateFromMainToMdWriter = {
+                navController.navigate(MainFragmentDirections.fromMainToWriter(it))
+            }
+            navigateFromReaderToMdWriter = {
+                navController.navigate(ReaderFragmentDirections.fromReaderToWriter(it))
+            }
+            navigateFromWriterToMdReader = {
+                navController.navigate(WriterFragmentDirections.fromWriterToReader(it))
+            }
+        }
     }
 }

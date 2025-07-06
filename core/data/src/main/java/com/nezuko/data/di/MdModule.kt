@@ -2,10 +2,10 @@ package com.nezuko.data.di
 
 import com.nezuko.data.md.MdRendererImpl
 import com.nezuko.data.md.MdParserImpl
-import com.nezuko.data.md.utils.ImageLoader
-import com.nezuko.data.md.utils.ImageLoaderImpl
-import com.nezuko.data.md.utils.TextStyler
-import com.nezuko.data.md.utils.TextStylerImpl
+import com.nezuko.data.utils.ImageLoader
+import com.nezuko.data.utils.ImageLoaderImpl
+import com.nezuko.data.utils.TextStyler
+import com.nezuko.data.utils.TextStylerImpl
 import com.nezuko.domain.repository.md.MdParserRepository
 import com.nezuko.domain.repository.md.MdRenderer
 import dagger.Binds

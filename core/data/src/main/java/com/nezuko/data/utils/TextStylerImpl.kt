@@ -1,4 +1,4 @@
-package com.nezuko.data.md.utils
+package com.nezuko.data.utils
 
 import android.graphics.Typeface
 import android.text.Spannable

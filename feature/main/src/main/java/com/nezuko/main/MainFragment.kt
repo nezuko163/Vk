@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
@@ -15,7 +16,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nezuko.domain.repository.Navigation
-import com.nezuko.main.databinding.BottomSheetWithTextFieldBinding
 import com.nezuko.main.databinding.FragmentMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collectLatest
@@ -39,7 +39,17 @@ class MainFragment : Fragment() {
     private lateinit var openFileLauncher: ActivityResultLauncher<Array<String>>
     private lateinit var createFileLauncher: ActivityResultLauncher<String>
 
-    private val bottomSheetWithText = BottomSheetWithTextField({})
+    private val bottomSheetWithText = BottomSheetWithTextField({
+        vm.downloadFromInternet(
+            it,
+            requireContext(),
+            onEnd = { id ->
+                navigation.navigateFromMainToMdReader(id)
+            },
+            onError = {
+                Toast.makeText(context, "Ошибка при скачивании", Toast.LENGTH_SHORT).show()
+            })
+    })
 
     private val bottomSheet = MyBottomSheetFragment(
         onOpenExitedFile = {
@@ -68,7 +78,8 @@ class MainFragment : Fragment() {
             registerForActivityResult(ActivityResultContracts.OpenDocument()) { uri ->
                 uri?.let {
                     requireContext().contentResolver.takePersistableUriPermission(
-                        it, Intent.FLAG_GRANT_READ_URI_PERMISSION
+                        uri,
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
                     )
                     Log.i(TAG, "onViewCreated: Открыт файл - uri: $it")
                     vm.processUri(it) { id -> navigation.navigateFromMainToMdReader(id) }
@@ -78,6 +89,10 @@ class MainFragment : Fragment() {
         createFileLauncher =
             registerForActivityResult(ActivityResultContracts.CreateDocument("text/markdown")) { uri ->
                 uri?.let {
+                    requireContext().contentResolver.takePersistableUriPermission(
+                        uri,
+                        Intent.FLAG_GRANT_READ_URI_PERMISSION or Intent.FLAG_GRANT_WRITE_URI_PERMISSION
+                    )
                     Log.i(TAG, "onViewCreated: Создан файл - uri: $it")
                     vm.processUri(it) { id -> navigation.navigateFromMainToMdReader(id) }
                 }

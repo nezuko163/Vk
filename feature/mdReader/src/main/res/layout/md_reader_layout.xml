@@ -31,7 +31,7 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:gravity="center_vertical"
-            android:text="asd"
+            android:text="@string/read"
             android:textColor="@color/white"
             android:textSize="10pt" />
 
@@ -48,10 +48,11 @@
 
     <LinearLayout
         android:id="@+id/mdContainer"
-        android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1" />
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:paddingHorizontal="10dp" />
 
 
 </LinearLayout>

@@ -3,7 +3,8 @@ package com.nezuko.domain.dto
 import java.time.Instant
 
 data class FileDto(
-    val fileName: String,
+    val filePath: String,
     val lastOpen: Instant,
-    val fileId: Int
+    val fileId: Int,
+    val fileName: String
 )

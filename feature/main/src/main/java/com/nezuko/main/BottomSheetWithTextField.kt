@@ -22,17 +22,16 @@ class BottomSheetWithTextField(
         binding = BottomSheetWithTextFieldBinding.inflate(inflater, container, false)
         return binding.root
     }
-//    override fun onStart() {
-//        super.onStart()
-//        dialog?.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE)
-//
-//        val imm = context?.getSystemService(Context.INPUT_METHOD_SERVICE) as? InputMethodManager
-//        imm?.showSoftInput(binding.editText, InputMethodManager.SHOW_IMPLICIT)
-//    }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val dialog = super.onCreateDialog(savedInstanceState)
-        dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+
+        dialog.setOnShowListener {
+            val bottomSheet = dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            bottomSheet?.setBackgroundResource(android.R.color.transparent)
+        }
+
+        dialog.window?.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
         return dialog
     }
 
@@ -40,10 +39,9 @@ class BottomSheetWithTextField(
         super.onViewCreated(view, savedInstanceState)
 
         binding.editText.requestFocus()
-        binding.btn.setOnClickListener {
+        binding.btnSend.setOnClickListener {
             dismiss()
             onBtnClick(binding.editText.text.toString())
         }
-
     }
 }

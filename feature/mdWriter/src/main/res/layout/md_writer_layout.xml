@@ -1,57 +1,65 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout android:layout_height="wrap_content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
     <LinearLayout
-        android:id="@+id/topBar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/topBarIconSize"
         android:background="@color/light_blue"
+        android:id="@+id/topBar"
+        android:layout_height="@dimen/topBarIconSize"
+        android:layout_width="match_parent"
         android:orientation="horizontal"
         android:paddingHorizontal="10dp">
 
         <ImageButton
-            android:id="@+id/back"
-            android:layout_width="@dimen/topBarIconSize"
-            android:layout_height="@dimen/topBarIconSize"
             android:background="@android:color/transparent"
+            android:id="@+id/back"
+            android:layout_height="@dimen/topBarIconSize"
+            android:layout_width="@dimen/topBarIconSize"
             android:padding="10dp"
             android:scaleType="centerCrop"
             android:src="@drawable/arrow_back"
             android:tint="@color/white" />
 
         <Space
-            android:layout_width="10dp"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:layout_width="10dp" />
 
         <TextView
-            android:layout_width="0dp"
+            android:gravity="center_vertical"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:text="zxc"
+            android:layout_width="0dp"
+            android:text="Редактирование"
             android:textColor="@color/white"
             android:textSize="10pt" />
 
         <ImageButton
-            android:id="@+id/edit"
-            android:layout_width="@dimen/topBarIconSize"
-            android:layout_height="@dimen/topBarIconSize"
             android:background="@android:color/transparent"
+            android:id="@+id/edit"
+            android:layout_height="@dimen/topBarIconSize"
+            android:layout_width="@dimen/topBarIconSize"
             android:padding="10dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/edit"
+            android:src="@drawable/done"
             android:tint="@color/white" />
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/mdContainer"
-        android:orientation="vertical"
+    <EditText
+        android:background="@android:color/transparent"
+        android:gravity="top|start"
+        android:hint="Введите текст..."
+        android:id="@+id/editTextNote"
+        android:imeOptions="flagNoExtractUi"
+        android:importantForAutofill="no"
+        android:inputType="textMultiLine|textCapSentences"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1" />
-
-
+        android:maxLines="1000"
+        android:overScrollMode="always"
+        android:paddingHorizontal="16dp"
+        android:scrollbars="vertical"
+        android:textCursorDrawable="@null"
+        android:textSize="16sp" />
 </LinearLayout>

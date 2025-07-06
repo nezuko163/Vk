@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Vk</string>
+    <string name="item_name">asd</string>
+    <string name="recent_files">Ранее</string>
+    <string name="device_file">Файл с устройства</string>
+    <string name="online_file">Файл с интернета</string>
+    <string name="new_file">Создать файл</string>
+    <string name="cancel">Отмена</string>
+</resources>

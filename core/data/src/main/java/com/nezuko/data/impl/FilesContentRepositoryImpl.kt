@@ -15,11 +15,11 @@ import javax.inject.Inject
 class FilesContentRepositoryImpl @Inject constructor(
     @param:ApplicationContext private val context: Context
 ) : FilesContentRepository {
-    override suspend fun readFile(name: String): String {
+    override suspend fun readFile(path: String): String {
         val text = withContext(Dispatchers.IO) {
-            context.contentResolver.openInputStream(name.toUri())?.use {
+            context.contentResolver.openInputStream(path.toUri())?.use {
                 it.bufferedReader().use { reader -> reader.readText() }
-            } ?: throw IOException("Cannot open InputStream: $name")
+            } ?: throw IOException("Cannot open InputStream: $path")
         }
         return text
     }

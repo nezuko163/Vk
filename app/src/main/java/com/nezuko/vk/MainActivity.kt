@@ -5,8 +5,11 @@ import android.util.Log
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
+import androidx.core.view.WindowCompat
 import androidx.core.view.WindowInsetsCompat
+import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import com.nezuko.domain.repository.Navigation
@@ -37,11 +40,20 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         Log.i(TAG, "onCreate: ASDASD")
 
+        window.statusBarColor =
+            ContextCompat.getColor(applicationContext, com.nezuko.main.R.color.light_blue)
+        WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false
+
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
+            v.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
             insets
         }
+
+
+        val callback = InsetsWithKeyboardCallback(window)
+        ViewCompat.setOnApplyWindowInsetsListener(binding.root, callback)
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment)
         navController = navHostFragment!!.findNavController()

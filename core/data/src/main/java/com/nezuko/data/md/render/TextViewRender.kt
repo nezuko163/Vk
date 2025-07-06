@@ -3,7 +3,9 @@ package com.nezuko.data.md.render
 import android.content.Context
 import android.view.View
 import android.widget.TextView
-import com.nezuko.data.md.utils.TextStyler
+import androidx.core.content.ContextCompat
+import com.nezuko.data.R
+import com.nezuko.data.utils.TextStyler
 import com.nezuko.domain.md.Header
 import com.nezuko.domain.md.MdBlock
 import dagger.hilt.android.qualifiers.ApplicationContext
@@ -26,6 +28,9 @@ class TextViewRender @Inject constructor(
                 Header.SIXTH -> 14f
                 null -> 14f
             }
+            val color = ContextCompat.getColor(context, R.color.black)
+            setTextColor(color)
+
             setLineSpacing(1.2f, 1.2f)
         }
     }

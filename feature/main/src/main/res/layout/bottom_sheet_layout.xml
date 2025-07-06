@@ -1,32 +1,50 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/bottomSheetLayout"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="16dp">
+    android:padding="8dp">
 
-    <TextView
+    <LinearLayout
         android:id="@+id/openFileTV"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Файл с устройства"
-        android:textSize="18sp" />
+        android:orientation="horizontal"
+        android:padding="16dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/device_file"
+            android:textColor="?android:attr/textColorPrimary"/>
+    </LinearLayout>
 
-    <TextView
+    <LinearLayout
         android:id="@+id/openInternetFileTV"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Файл с интернета"
-        android:textSize="18sp" />
+        android:orientation="horizontal"
+        android:padding="16dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/online_file"
+            android:textColor="?android:attr/textColorPrimary"/>
+    </LinearLayout>
 
-    <TextView
+    <LinearLayout
         android:id="@+id/createNewFileTV"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Создать новый файл"
-        android:textSize="18sp" />
-
-    <!-- Добавь сюда любые кнопки, списки и т.д. -->
-
+        android:orientation="horizontal"
+        android:padding="16dp">
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="@string/new_file"
+            android:textColor="?android:attr/textColorPrimary"/>
+    </LinearLayout>
 </LinearLayout>

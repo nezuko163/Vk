@@ -26,8 +26,8 @@ interface FileDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertAll(files: List<FileEntity>)
 
-    @Query("SELECT * FROM files WHERE name = :name")
-    suspend fun getFileByName(name: String): List<FileEntity>
+    @Query("SELECT * FROM files WHERE path = :path")
+    suspend fun getFileByPath(path: String): List<FileEntity>
 
     @Query("SELECT * FROM files WHERE id = :id")
     suspend fun getFileById(id: Int): FileEntity

@@ -5,6 +5,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -63,6 +64,9 @@ class ReaderFragment : Fragment() {
                         is Result.Error<*> -> {
                             Log.i(TAG, "onViewCreated: state flow - error")
                             res.exception.printStackTrace()
+                            Toast.makeText(context, "Ошибка при чтении", Toast.LENGTH_SHORT)
+                                .show()
+                            navigation.navigateBack()
                         }
                         is Result.Loading<*> -> {
                             Log.i(TAG, "onViewCreated: state flow - loading")
@@ -86,3 +90,5 @@ class ReaderFragment : Fragment() {
         vm.setNone()
     }
 }
+
+

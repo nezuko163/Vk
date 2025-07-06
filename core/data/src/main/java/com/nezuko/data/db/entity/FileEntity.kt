@@ -9,12 +9,13 @@ import java.time.Instant
 @Entity(
     tableName = "files",
     indices = [
-        Index("name", unique = true),  // <- делаем уникальным
+        Index("path", unique = true),  // <- делаем уникальным
         Index("last_open")
     ]
 )
 data class FileEntity(
     @PrimaryKey(autoGenerate = true) val id: Int,
     @ColumnInfo("name") val fileName: String,
+    @ColumnInfo("path") val filePath: String,
     @ColumnInfo("last_open") val lastOpen: Instant,
 )

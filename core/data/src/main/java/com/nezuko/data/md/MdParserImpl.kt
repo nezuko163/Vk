@@ -4,123 +4,96 @@ import com.nezuko.domain.md.Header
 import com.nezuko.domain.md.MdBlock
 import com.nezuko.domain.repository.md.MdParserRepository
 import javax.inject.Inject
+import kotlin.collections.iterator
+
 
 class MdParserImpl @Inject constructor() : MdParserRepository {
-
-    fun asd(): List<Int> {
-        val a = ArrayList<Int>()
-        return a
-    }
-
-    fun parseMdSanyaPomogi(text: String): List<MdBlock> {
+    override fun parseMd(text: String): List<MdBlock> {
         val blocks = mutableListOf<MdBlock>()
         val lines = text.lines()
-
-        var isInTable = false
-        val tableHeaders = mutableListOf<MdBlock.MdText>()
-        val tableRows = mutableListOf<List<MdBlock.MdText>>()
         var isPrevLineEmpty = false
-
         var i = 0
 
-        while (i < lines.size) {
-            val line = lines.get(i)
-            val trimmed = line.trim()
+        val tableSepPattern = Regex(
+            "^\\s*\\|?\\s*:?[-]+:?\\s*(\\|\\s*:?[-]+:?\\s*)+\\|?\\s*$"
+        )
 
-            // Пропуск пустых строк
+        while (i < lines.size) {
+            val rawLine = lines[i]
+            val trimmed = cleanSpaces(rawLine.trim())
+
             if (trimmed.isEmpty()) {
-                if (isPrevLineEmpty) {
+                if (!isPrevLineEmpty) {
                     blocks.add(MdBlock.MdEmptyLine())
                 }
                 isPrevLineEmpty = true
+                i++
+                continue
             }
+            isPrevLineEmpty = false
 
-//             Заголовки
+            // Заголовки (#...)
             if (trimmed.startsWith("#")) {
                 blocks.add(parseHeader(trimmed))
-            }
-
-            // Изображение
-            val imageMatch = Regex("^!\\[.*?]\\((.*?)\\)").find(trimmed)
-            if (imageMatch != null) {
-                val url = imageMatch.groupValues[1]
-                blocks.add(MdBlock.MdImage(url))
+                i++
                 continue
             }
 
-            // Таблицы
-            if (trimmed.contains("|")) {
-                val columns = trimmed.split("|").map { it.trim() }.filter { it.isNotEmpty() }
-                if (!isInTable) {
-                    tableHeaders.clear()
-                    tableRows.clear()
-                    columns.forEach {
-                        tableHeaders.add(MdBlock.MdText(it))
-                    }
-                    isInTable = true
-                } else {
-                    val row = columns.map { MdBlock.MdText(it) }
-                    tableRows.add(row)
-                }
+            // Изображения
+            val match = Regex("^!\\[.*?]\\((.*?)\\)").find(trimmed)
+            if (match != null) {
+                blocks.add(MdBlock.MdImage(match.groupValues[1]))
+                i++
                 continue
             }
 
-            // Конец таблицы — сохранить блок
-            if (isInTable && !trimmed.contains("|")) {
-                val map = mutableMapOf<MdBlock.MdText, List<MdBlock.MdText>>()
-                for ((i, row) in tableRows.withIndex()) {
-                    for ((j, cell) in row.withIndex()) {
-                        val key = tableHeaders.getOrNull(j) ?: continue
-                        val values = map.getOrDefault(key, emptyList())
-                        map[key] = values + cell
+            // Таблицы: проверка заголовка и следующей строки-сепаратора
+            if (trimmed.contains("|") && i + 1 < lines.size && tableSepPattern.matches(lines[i + 1])) {
+                // Парсим заголовки
+                val headerCells = trimmed.trim().trim('|')
+                    .split("|")
+                    .map { cleanSpaces(it) }
+                    .map { MdBlock.MdText(it) }
+                // Пропускаем строку заголовка и сепаратора
+                i += 2
+
+                // Парсим строки данных
+                val rows = mutableListOf<List<MdBlock.MdText>>()
+                while (i < lines.size && lines[i].contains("|")) {
+                    val rowTrim = cleanSpaces(lines[i].trim())
+                    if (rowTrim.isEmpty()) break
+                    val cells = rowTrim.trim().trim('|')
+                        .split("|")
+                        .map { cleanSpaces(it) }
+                        .map { MdBlock.MdText(it) }
+                    // Добавляем только если число ячеек совпадает с заголовками
+                    if (cells.size == headerCells.size) {
+                        rows.add(cells)
                     }
+                    i++
                 }
-                blocks.add(MdBlock.MdTable(map))
-                isInTable = false
+
+                // Собираем в Map<заголовок, список ячеек>
+                val tableMap = headerCells.mapIndexed { idx, header ->
+                    header to rows.map { it[idx] }
+                }.toMap()
+                blocks.add(MdBlock.MdTable(tableMap))
+                continue
             }
 
-            // Просто текст
-//            if (!trimmed.contains("|")) {
-//                blocks.add(
-//                    MdBlock.MdText(
-//                        text = trimmed,
-//                        italicIndexes = findStyleIndexes(trimmed, "_", "_"),
-//                        boldIndexes = findStyleIndexes(trimmed, "**", "**"),
-//                        crossedOutIndexes = findStyleIndexes(trimmed, "~~", "~~")
-//                    )
-//                )
-//            }
-        }
-
-        // Если таблица осталась незакрытой — добавим
-        if (isInTable) {
-            val map = mutableMapOf<MdBlock.MdText, List<MdBlock.MdText>>()
-            for ((i, row) in tableRows.withIndex()) {
-                for ((j, cell) in row.withIndex()) {
-                    val key = tableHeaders.getOrNull(j) ?: continue
-                    val values = map.getOrDefault(key, emptyList())
-                    map[key] = values + cell
-                }
-            }
-            blocks.add(MdBlock.MdTable(map))
+            // Обычный текст
+            blocks.add(parseText(trimmed))
+            i++
         }
 
         return blocks
     }
 
-    fun parseLines(lines: List<String>, lineNumber: Int): MdBlock.MdText {
-        var i = 0
-        val line = lines[i]
 
-        while (i < line.length) {
-
-        }
-        return MdBlock.MdText(line.substring(i, line.length))
-    }
-
-    fun parseText(text: String): MdBlock.MdText {
+    fun parseText(text1: String): MdBlock.MdText {
         val symbols = linkedMapOf<String, MutableList<Int>>()
         val markers = listOf("~~~", "***", "~~", "**", "*", "~")
+        val text = cleanSpaces(text1)
         var i = 0
         while (i < text.length) {
             var matched = false
@@ -142,7 +115,7 @@ class MdParserImpl @Inject constructor() : MdParserRepository {
 
     fun formatText(
         text: String,
-        symbols: Map<String, List<Int>>
+        symbols: Map<String, List<Int>>,
     ): MdBlock.MdText {
         val italicRanges = mutableListOf<IntArray>()
         val boldRanges = mutableListOf<IntArray>()
@@ -158,15 +131,19 @@ class MdParserImpl @Inject constructor() : MdParserRepository {
                         italicRanges += intArrayOf(open + sym.length, close)
                         boldRanges += intArrayOf(open + sym.length, close)
                     }
+
                     "**" -> {
                         boldRanges += intArrayOf(open + sym.length, close)
                     }
+
                     "*" -> {
                         italicRanges += intArrayOf(open + sym.length, close)
                     }
+
                     "~~" -> {
                         strikeRanges += intArrayOf(open + sym.length, close)
                     }
+
                     "~" -> {
                         strikeRanges += intArrayOf(open + sym.length, close)
                     }
@@ -214,13 +191,11 @@ class MdParserImpl @Inject constructor() : MdParserRepository {
     }
 
 
-
-
     fun parseHeader(line: String): MdBlock.MdText {
         for (level in 0..5) {
             if (level >= line.length) return MdBlock.MdText("", header = Header.from(level + 1))
             if (line[level] != '#') {
-                return parseText(line.substring(level).trim()).also {
+                return parseText(line.substring(level).trimStart()).also {
                     it.header = Header.from(level)
                 }
             }
@@ -240,10 +215,6 @@ class MdParserImpl @Inject constructor() : MdParserRepository {
         return text
             .replace(Regex("(?<!\n)\n(?!\n)"), " ")
             .replace(Regex("\n{2,}"), "\n")
-    }
-
-    override fun parseMd(text: String): List<MdBlock> {
-        return arrayListOf(parseText(normalizeNewlines(cleanSpaces(text))))
     }
 }
 

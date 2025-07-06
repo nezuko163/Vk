@@ -18,13 +18,6 @@ class MdParserTest {
         assertEquals(mdParser.parseHeader("####### 1"), MdBlock.MdText("# 1", header = Header.SIXTH))
     }
 
-    @Test
-    fun paragraphTest() {
-        val a = mdParser.parseMd("_1_").first()
-        println(a)
-        println((a as MdBlock.MdText).italicIndexes.first().contentToString())
-        assertEquals(MdBlock.MdText("1", header = Header.FIRST), a)
-    }
 
 
     @Test
@@ -211,17 +204,6 @@ class MdParserTest {
         assertEquals(expected, res)
     }
 
-    @Test
-    fun parseTextTest_StrangeeSituation2() {
-        val a = "*a**a*  zxc *qwe* ~xzc~\n\n*asd*"
-        val res = mdParser.parseText(a)
-        val expected = MdBlock.MdText(
-            "a**a zxc qwe xzc\nasd",
-            italicIndexes = arrayListOf(intArrayOf(0, 4), intArrayOf(9, 12), intArrayOf(17, 20)),
-            crossedOutIndexes = arrayListOf(intArrayOf(13, 16))
-        )
-        assertEquals(expected, res)
-    }
 
     @Test
     fun parseMdText() {

@@ -8,7 +8,6 @@
     android:layout_marginVertical="4dp"
     app:cardCornerRadius="8dp"
     app:cardElevation="2dp"
-    app:strokeColor="@color/black"
     app:strokeWidth="1dp">
 
     <LinearLayout
@@ -38,15 +37,6 @@
             android:paddingStart="4dp"
             android:textAppearance="@style/TextAppearance.AppCompat.Body1"
             android:textColor="?android:attr/textColorPrimary" />
-
-        <ImageButton
-            android:layout_width="48dp"
-            android:layout_height="48dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="12dp"
-            android:scaleType="centerInside"
-            android:src="@drawable/vertical_dots"
-            app:tint="?attr/colorOnSurface" />
 
     </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

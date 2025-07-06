@@ -9,6 +9,7 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.Lifecycle
@@ -101,6 +102,10 @@ class MainFragment : Fragment() {
         binding.open.setOnClickListener {
             bottomSheet.show(parentFragmentManager, bottomSheet.tag)
         }
+        
+        binding.emptyView.setOnClickListener {
+            bottomSheet.show(parentFragmentManager, bottomSheet.tag)
+        }
 
         binding.rcView.layoutManager = LinearLayoutManager(context)
         adapter = FilesAdapter(onItemClick = { file ->
@@ -108,6 +113,14 @@ class MainFragment : Fragment() {
             navigation.navigateFromMainToMdReader(file.fileId)
         })
         binding.rcView.adapter = adapter
+
+        lifecycleScope.launch {
+            adapter.loadStateFlow.collect { loadStates ->
+                val isListEmpty = adapter.itemCount == 0
+
+                binding.emptyView.isVisible = isListEmpty
+            }
+        }
 
         viewLifecycleOwner.lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED, {

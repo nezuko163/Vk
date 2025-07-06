@@ -9,7 +9,7 @@ import java.time.Instant
 @Entity(
     tableName = "files",
     indices = [
-        Index("path", unique = true),  // <- делаем уникальным
+        Index("path", unique = true),
         Index("last_open")
     ]
 )

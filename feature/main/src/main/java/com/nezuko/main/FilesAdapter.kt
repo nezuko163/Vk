@@ -34,7 +34,7 @@ class FilesAdapter(
         position: Int
     ) {
         val file = getItem(position)
-        file?.let { holder.bind(it)}
+        file?.let { holder.bind(it) }
     }
 
 
@@ -47,6 +47,7 @@ class FilesAdapter(
                 onItemClick(file)
             }
         }
+
     }
 
     companion object {

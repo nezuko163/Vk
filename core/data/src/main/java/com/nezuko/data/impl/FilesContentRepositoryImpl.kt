@@ -1,10 +1,7 @@
 package com.nezuko.data.impl
 
-import android.R.attr.name
 import android.content.Context
-import android.util.Log.e
 import androidx.core.net.toUri
-import com.nezuko.domain.model.Result
 import com.nezuko.domain.repository.FilesContentRepository
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.Dispatchers

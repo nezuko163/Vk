@@ -6,4 +6,6 @@
     <string name="online_file">Файл с интернета</string>
     <string name="new_file">Создать файл</string>
     <string name="cancel">Отмена</string>
+    <string name="openFiles"><u>Открыть файл</u></string>
+    <string name="mdview">MdView</string>
 </resources>

@@ -1,5 +1,6 @@
 package com.nezuko.main
 
+import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,6 +20,16 @@ class MyBottomSheetFragment(
     ): View {
         binding = BottomSheetLayoutBinding.inflate(inflater, container, false)
         return binding.root
+    }
+
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        val dialog =  super.onCreateDialog(savedInstanceState)
+        dialog.setOnShowListener {
+            val bottomSheet = dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+            bottomSheet?.setBackgroundResource(android.R.color.transparent)
+        }
+
+        return dialog
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

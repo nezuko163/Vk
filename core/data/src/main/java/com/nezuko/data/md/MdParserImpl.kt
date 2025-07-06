@@ -4,7 +4,6 @@ import com.nezuko.domain.md.Header
 import com.nezuko.domain.md.MdBlock
 import com.nezuko.domain.repository.md.MdParserRepository
 import javax.inject.Inject
-import kotlin.collections.iterator
 
 
 class MdParserImpl @Inject constructor() : MdParserRepository {
@@ -32,14 +31,14 @@ class MdParserImpl @Inject constructor() : MdParserRepository {
             }
             isPrevLineEmpty = false
 
-            // Заголовки (#...)
+
             if (trimmed.startsWith("#")) {
                 blocks.add(parseHeader(trimmed))
                 i++
                 continue
             }
 
-            // Изображения
+
             val match = Regex("^!\\[.*?]\\((.*?)\\)").find(trimmed)
             if (match != null) {
                 blocks.add(MdBlock.MdImage(match.groupValues[1]))
@@ -47,17 +46,17 @@ class MdParserImpl @Inject constructor() : MdParserRepository {
                 continue
             }
 
-            // Таблицы: проверка заголовка и следующей строки-сепаратора
+
             if (trimmed.contains("|") && i + 1 < lines.size && tableSepPattern.matches(lines[i + 1])) {
                 // Парсим заголовки
                 val headerCells = trimmed.trim().trim('|')
                     .split("|")
                     .map { cleanSpaces(it) }
                     .map { MdBlock.MdText(it) }
-                // Пропускаем строку заголовка и сепаратора
+
                 i += 2
 
-                // Парсим строки данных
+
                 val rows = mutableListOf<List<MdBlock.MdText>>()
                 while (i < lines.size && lines[i].contains("|")) {
                     val rowTrim = cleanSpaces(lines[i].trim())
@@ -66,14 +65,14 @@ class MdParserImpl @Inject constructor() : MdParserRepository {
                         .split("|")
                         .map { cleanSpaces(it) }
                         .map { MdBlock.MdText(it) }
-                    // Добавляем только если число ячеек совпадает с заголовками
+
                     if (cells.size == headerCells.size) {
                         rows.add(cells)
                     }
                     i++
                 }
 
-                // Собираем в Map<заголовок, список ячеек>
+
                 val tableMap = headerCells.mapIndexed { idx, header ->
                     header to rows.map { it[idx] }
                 }.toMap()
@@ -81,7 +80,7 @@ class MdParserImpl @Inject constructor() : MdParserRepository {
                 continue
             }
 
-            // Обычный текст
+
             blocks.add(parseText(trimmed))
             i++
         }

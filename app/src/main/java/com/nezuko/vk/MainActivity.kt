@@ -2,13 +2,14 @@ package com.nezuko.vk
 
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.view.ViewGroup
 import androidx.activity.enableEdgeToEdge
+import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
 import androidx.core.view.ViewCompat
-import androidx.core.view.WindowCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.view.WindowInsetsControllerCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
@@ -29,7 +30,6 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var navigation: Navigation
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.i(TAG, "onCreate: zxc")
         super.onCreate(savedInstanceState)
@@ -39,17 +39,8 @@ class MainActivity : AppCompatActivity() {
         binding = MainLayoutBinding.inflate(layoutInflater)
         setContentView(binding.root)
         Log.i(TAG, "onCreate: ASDASD")
-
-        window.statusBarColor =
-            ContextCompat.getColor(applicationContext, com.nezuko.main.R.color.light_blue)
+        binding.root.addView(statusBarOverlay(), 0)
         WindowInsetsControllerCompat(window, window.decorView).isAppearanceLightStatusBars = false
-
-
-        ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, 0, systemBars.right, systemBars.bottom)
-            insets
-        }
 
 
         val callback = InsetsWithKeyboardCallback(window)
@@ -74,4 +65,24 @@ class MainActivity : AppCompatActivity() {
             }
         }
     }
+
+    private fun statusBarOverlay(@ColorRes colorRes: Int = com.nezuko.mdwriter.R.color.light_blue): View  {
+        val statusBarHeight = getStatusBarHeight()
+        return View(this).apply {
+            layoutParams = ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                statusBarHeight
+            )
+            setBackgroundColor(ContextCompat.getColor(applicationContext, colorRes))
+        }
+    }
+
+
+    private fun getStatusBarHeight(): Int {
+        val resourceId =
+            applicationContext.resources.getIdentifier("status_bar_height", "dimen", "android")
+        return if (resourceId > 0) applicationContext.resources.getDimensionPixelSize(resourceId) else 24
+    }
+
+
 }
